@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eglise Le Centre</title>
+    <link rel="stylesheet" href="{% static 'css/print_events.css' %}">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@600&family=Inter:wght@400;700&family=League+Spartan:wght@300;400;500;600;700&display=swap");
+        @import url("https://fonts.googleapis.com/css2?family=Libre+Bodoni:wght@400;700&display=swap");
+        @page {
+            size: A4 landscape;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-content">
+        <div class="calendar">
+            <div class="main-title">
+                <h1 class="month-name">{{ current.month }} {{ current.year}}</h1>
+            </div>
+            <div class="day-of-week">
+                {% for day in days_of_week %}
+                    <div class="day-week">{{ day }}</div>
+                {% endfor %}
+            </div>
+            <div class="date-grid">
+                {% for week in date_grid %}
+                    <div class="date-row">
+                        {% for date in week %}
+                            {% if date == current.day %}
+                                <span class="date highlighted">{{ date }}</span>
+                            {% else %}
+                                <span class="date">{{ date }}</span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="vertical-line"> line </div>
+        <div class="events">
+
+            {% for event in events %}
+                <div class="event-section">
+                    <div class="single-event">
+                        <div>
+                            <p class="single-event-data">{{ event.start_date.day }}</p>
+                        </div>
+                        <div>
+                            <p class="single-event-time">{{ event.start_time|time:"H:i" }} - {{ event.end_time|time:"H:i" }} EDT</p>
+                            <p class="single-event-title">{{ event.title }}</p>
+                            <p class="single-event-subtitle">{{ event.location }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <!-- <img src="assets\logo.png" alt="Logo" width="340" height="180"> -->
+            </div>
+            <div class="footer-text">
+                <p class="footer-content-address">Rue St-PierreOrléans, Ontario K1C 1L3</p>
+                <p class="footer-content-address">04081080</p>
+                <p class="footer-content-email">www.egliselecentre.com, 2023</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

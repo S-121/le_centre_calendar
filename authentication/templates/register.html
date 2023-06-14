@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Register</title>
+</head>
+<body>
+
+    <div class="container">
+        <div class="box">
+            <form action="{% url 'register' %}" method="POST">{% csrf_token %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert {{message.tags}}">
+                            {{message}}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <h1 class="titulo font-degrade borda-bottom-degrade">SUBSCRIBE</h2>
+                <br>
+                <span class="span-descricao">User name:</span>
+                    <input type="text" class="form-control input-cadastro" name="username">
+                <br>
+                <span class="span-descricao">Email:</span>
+                    <input type="email" class="form-control input-cadastro" name="email" required>
+                <br>
+                <span class="span-descricao">Password:</span>
+                    <input type="password" class="form-control input-cadastro" name="password">
+                <br>
+                <span class="span-descricao">Confirm password:</span>
+                    <input type="password" class="form-control input-cadastro" name="confirm-password">
+                <br>
+                <input type="submit" value="REGISTER" class="btn btn-success btn-lg">
+                <a href="{% url 'login' %}" class="btn btn-primary btn-lg">LOGIN</a>
+            </form>
+            </div>
+    </div>        
+
+</body>
+</html>
+

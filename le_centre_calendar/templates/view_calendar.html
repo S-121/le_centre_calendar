@@ -1,0 +1,107 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Les 3 balises ci-dessus doivent venir en premier dans l'en-tête ; tout autre contenu de l'en-tête doit venir après -->
+  <title>Église Le Centre Événements</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'css/view_calendar.css' %}">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script> -->
+
+</head>
+
+<body>
+  <div class="container">
+    <form method="get" class="mb-4">
+      <div class="row">
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="start_date">Date de début</label>
+            <input type="date" class="form-control" id="start_date" name="start_date">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="end_date">Date de fin</label>
+            <input type="date" class="form-control" id="end_date" name="end_date">
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="location">Lieu</label>
+            <select class="form-control" id="location" name="location">
+              <option value="">Tous</option>
+              <option value="Ottawa">Ottawa</option>
+              <option value="Montréal">Montréal</option>
+              <option value="Lac-St-Jean">Lac-St-Jean</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="form-group">
+            <label for="featured">Categories</label>
+            <select class="custom-select" id="featured" name="featured">
+              <option value="">Toutes</option>
+              <option value="1">En vedettes</option>
+              <option value="0">Services Réguliers</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary btn-block"
+            style="background-color: #4c5758; color: #ffffff; border-color: #4c5758; font-family: 'Lato', Arial, 'Helvetica Neue', Helvetica, sans-serif;">
+            Filtrer
+          </button>
+        </div>
+      </div>
+    </form>
+    <div class="container">
+      <div class="row">
+        {% regroup events by start_date as events_by_day %}
+        {% for day in events_by_day %}
+        <div class="col-sm-12 col-md-6 col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-3">
+                  <div class="calendar-card-date-container">
+                    <div class="calendar-card-date">{{ day.grouper|date:"d" }}</div>
+                    <div class="calendar-card-date month">{{ day.grouper|date:"M" }}</div>
+                  </div>
+                </div>
+                <div class="col-9">
+                  <h5 class="card-title">{{ day.grouper|date:"l"|capfirst }}</h5>
+                  <div class="w-dyn-list">
+                    <div role="list" class="w-clearfix w-dyn-items calendar-day-items">
+                      {% for event in day.list %}
+                        <div role="listitem" class="calendar-list-item w-clearfix w-dyn-item" categories="">
+                          {% if event.featured and event.get_absolute_url %}
+                            <a href="{{ event.get_absolute_url }}" class="calendar-link-block w-inline-block w-clearfix">
+                          {% endif %}
+                            <h5 class="calendar-item-title">{{ event.title }}</h5>
+                          {% if event.featured and event.get_absolute_url %}
+                            </a>
+                          {% endif %}
+                          <p class="calendar-item-details">{{ event.start_time|time:"H:i" }} - {{ event.end_time|time:"H:i" }} @ {{ event.location }}</p>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+</body>
+
+</html>
